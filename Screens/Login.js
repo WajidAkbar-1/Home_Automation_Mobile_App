@@ -1,35 +1,63 @@
-import { 
+import {
   View,
   Text,
-  StyleSheet,
   TextInput,
-  TouchableOpacity, 
+  TouchableOpacity,
   Alert,
 } from 'react-native';
 import { useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { styles } from '../Styles/LoginSignupStyle';
+import db from "../databse"
+import { get, ref } from 'firebase/database';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Login({ navigation }) {
 
-  const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+  const validateUserName = (userName) => {
+    return userName.length >= 5
   };
 
+
+  const LoginUser = async (userName, password) => {
+    try {
+      const userRef = ref(db, `users/${userName}`)
+      const userSnapshot = await get(userRef);
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.val()
+
+        if (userData.password === password) {
+          console.log(userName, password)
+          console.log(userData)
+
+          await AsyncStorage.setItem("user", JSON.stringify({ userName }))
+
+          navigation.navigate('SmartHomeScreen');
+
+        }
+
+
+      }
+      else {
+        Alert.alert("user name or password incorrect")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
   const handleLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Please enter email and password');
-    } else if (!validateEmail(email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+    if (userName === '' || password === '') {
+      Alert.alert('Error', 'Please enter user Name and password');
+    } else if (!validateUserName(userName)) {
+      Alert.alert('Error', 'Please enter a valid user Name address');
     } else {
-      // login logic here
-      console.log('Email:', email);
-      console.log('Password:', password);
-      navigation.navigate('SmartHomeScreen');
+      // login logic her
+      LoginUser(userName, password)
+
     }
   };
 
@@ -43,9 +71,9 @@ export function Login({ navigation }) {
           <MaterialIcons name="email" size={20} color="#888" />
           <TextInput
             style={styles.input}
-            placeholder="E-mail"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
+            placeholder="UserName"
+            value={userName}
+            onChangeText={(text) => setUserName(text)}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -58,9 +86,7 @@ export function Login({ navigation }) {
             onChangeText={(text) => setPassword(text)}
           />
         </View>
-        <TouchableOpacity style={styles.forgotPassword}>
-          <Text style={styles.forgotText}>Forgot password?</Text>
-        </TouchableOpacity>
+
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>LOG IN</Text>
         </TouchableOpacity>

@@ -12,12 +12,14 @@ export const SmartHome = ({navigation}) => {
       <View style={styles.buttonsContainer}>
         <View style={styles.column}>
           <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Usage')}>
-            <Icon name="attach-money" size={30} color="#000" />
-            <Text style={styles.buttonText}>Energy Usage</Text>
+            
+            <Icon name="bar-chart" size={30} color="#000" />
+
+            <Text style={styles.buttonText}>Energy Graph</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Graph')}>
-            <Icon name="bar-chart" size={30} color="#000" />
-            <Text style={styles.buttonText}>Energy Graph</Text>
+          <Icon name="attach-money" size={30} color="#000" />
+            <Text style={styles.buttonText}> Energy Usage</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('ControlEnergy')}>
             <Icon name="settings-power" size={30} color="#000" />

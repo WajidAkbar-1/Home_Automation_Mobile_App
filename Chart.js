@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { View, Text,StyleSheet, Dimensions } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { View, Text, Dimensions,StyleSheet } from 'react-native'
 import { LineChart } from "react-native-chart-kit";
-import db from "../databse";
-import { get, limitToLast, query, ref } from "firebase/database";
+import { ref, get, query,limitToLast  } from "firebase/database";
+import db from './databse';
 
 
-export function Usage(){
+const Chart = () => {
+
     const [consumption, setConsumption] = useState([]);
     useEffect(() => {
 
@@ -22,35 +23,39 @@ export function Usage(){
         })()
 
     }, [])
-    if (consumption.length === 0) {
+
+    if(consumption.length === 0){
         return <Text>Loading...</Text>
     }
 
+
     return (
-        
         <View>
             <Text style={styles.heading}>consumption chart</Text>
             <LineChart
-
                 data={{
-                    labels:consumption?.map((data,index)=>{ 
-                        const options = {
-                            timeZone: 'Asia/Karachi',
-                            hour12: true, 
-                            hour: 'numeric',
-                            minute: 'numeric'
-                        };
-                        return new Date(data.timestamp * 1000).toLocaleTimeString('en-PK', options)
-                      }) ,
+                    labels:["1","2","3","4","5"],
+                    // labels:consumption?.map((data,index)=>{ 
+                        
+                    //     const options = {
+                    //         timeZone: 'Asia/Karachi',
+                    //         hour12: true, 
+                    //         hour: 'numeric',
+                    //         minute: 'numeric'
+                    //     };
+                    //     return new Date(data.timestamp).toLocaleTimeString('en-PK', options)
+                    //   }) ,
+        
                     datasets: [
                         {
-                            data:consumption?.map((data,index)=>data["power_consumption"]) 
-               
+                            // data:consumption?.map((data,index)=>data["consumption"]) 
+                            data:[1,2,3,4,5]
                         }
                     ]
                 }}
                 width={Dimensions.get("window").width} 
                 height={400}
+                
                 yAxisSuffix="wh"
                 yAxisInterval={1} 
                 chartConfig={{
@@ -92,3 +97,4 @@ const styles = StyleSheet.create({
     
     }
 })
+export default Chart
