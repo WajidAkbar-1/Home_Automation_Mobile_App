@@ -9,7 +9,7 @@ import { SignUp } from './Screens/SignUp';
 import { Light } from './Screens/LightIntensity';
 import { Temperature } from './Screens/TemperatureScreen';
 import { Graph } from './Screens/GraphScreen';
-import { ControlEnergy } from './Screens/ControlEnergyScreen';
+import { ControlEnergy } from './Screens/ControlDevicesScreen';
 import { Usage } from './Screens/UsageScreen';
 import { Setting } from './Screens/SettingScreen';
 const Stack = createStackNavigator();
@@ -32,16 +32,8 @@ export default function App() {
           name="SmartHomeScreen" 
           component={SmartHome} 
           options={{ 
-            headerShown: false
-            // title: "Welcome To Smart Home",
-            // headerStyle: {
-            //   backgroundColor: '#808080', // Use the same background color as the header
-            // },
-            // headerTintColor: '#fff', // Text color
-            // headerTitleStyle: {
-            //   fontSize: 24,
-            //   fontWeight: 'bold',
-            // },
+            headerShown: false,
+            
           }} 
         />
         <Stack.Screen name="Graph" component={Graph}/>
